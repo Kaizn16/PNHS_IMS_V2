@@ -20,6 +20,9 @@ class Admin
             return $next($request);
         }
         
-        return redirect()->route('auth.logout');
+        return redirect()->route('admin.dashboard')->with([
+            'type' => 'warning',
+            'message' => 'Access denied: insufficient role permissions.'
+        ]);        
     }
 }

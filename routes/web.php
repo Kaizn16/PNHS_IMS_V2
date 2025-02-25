@@ -7,7 +7,6 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
 Route::controller(ApiController::class)->group(function() {
     Route::get('api/nationalities', 'getNationalities')->name('get.nationalities');
     Route::get('api/provinces', 'getProvinces')->name('get.provinces');

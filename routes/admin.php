@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(DashboardController::class)->group(function() {
    Route::get('Dashboard', 'index')->name('admin.dashboard');
-   Route::get('Dashboard/Students/Chart', 'studentsChart')->name('admin.students.chart');
 });
 
 Route::controller(TeacherConctroller::class)->prefix('Teachers')->group(function() {

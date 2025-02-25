@@ -64,20 +64,11 @@
     </script>
 @endif
 <script>
-    async function fetchStudentData() {
-        const STUDENTS_CHART_ROUTE = route('admin.students.chart');
-        try {
-            const response = await fetch(`${STUDENTS_CHART_ROUTE}`);
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error fetching student data:', error);
-            return { Continuing: 0, Graduated: 0, Stopped: 0 };
-        }
-    }
-
     async function renderStudentChart() {
-        const studentData = await fetchStudentData();
+
+        const CONTINUING = @json($Continuing);
+        const GRADUATED = @json($Graduated);
+        const STOPPED = @json($Stopped);
 
         const ctx = document.getElementById('studentsChart').getContext('2d');
         
@@ -87,7 +78,7 @@
                 labels: ['Continuing', 'Graduated', 'Stopped'],
                 datasets: [{
                     label: 'Total Students',
-                    data: [studentData.Continuing, studentData.Graduated, studentData.Stopped],
+                    data: [CONTINUING, GRADUATED, STOPPED],
                     backgroundColor: ['#36a2eb', '#4caf50', '#ff6384'],
                     borderColor: ['#258cd1', '#388e3c', '#d32f2f'],
                     borderWidth: 1

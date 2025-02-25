@@ -21,6 +21,9 @@ class Student
             return $next($request);
         }
         
-        return redirect()->route('auth.logout');
+        return redirect()->back()->with([
+            'type' => 'warning',
+            'message' => 'Access denied: insufficient role permissions.'
+        ]);
     }
 }

@@ -19,7 +19,10 @@ class Teacher
         if(Auth::check() && Auth::user()->role->role_type == "teacher") {
             return $next($request);
         }
-        
-        return redirect()->route('auth.logout');
+    
+        return redirect()->back()->with([
+            'type' => 'warning',
+            'message' => 'Access denied: insufficient role permissions.'
+        ]);
     }
 }
