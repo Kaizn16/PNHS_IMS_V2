@@ -22,11 +22,28 @@ class DashboardController extends Controller
             ->groupBy('enrollment_status')
             ->pluck('total', 'enrollment_status');
 
-        $Continuing = $studentCounts['Continuing'] ?? 0;
-        $Graduated = $studentCounts['Graduated'] ?? 0;
-        $Stopped = $studentCounts['Stopped'] ?? 0;
+        $continuingStudents = $studentCounts['Continuing'] ?? 0;
+        $graduatedStudents = $studentCounts['Graduated'] ?? 0;
+        $stoppedStudents = $studentCounts['Stopped'] ?? 0;
+
+        $teacherStatusCounts = Teacher::query()
+            ->selectRaw('employment_status, COUNT(*) as total')
+            ->groupBy('employment_status') 
+            ->pluck('total', 'employment_status');
+        
+        $teacherEmploymentTypeCounts = Teacher::query()
+            ->selectRaw('employment_type, COUNT(*) as total')
+            ->groupBy('employment_type') 
+            ->pluck('total', 'employment_type');
+
+        $activeTeachers = $teacherStatusCounts['Active'] ?? 0;
+        $inactiveTeachers = $teacherStatusCounts['Inactive'] ?? 0;
+
+        $fullTimeTeachers = $teacherEmploymentTypeCounts['Full-Time'] ?? 0;
+        $partTimeTeachers = $teacherEmploymentTypeCounts['Part-Time'] ?? 0;
 
         return view('admin.dashboard', 
-        compact('totalUsers', 'totalStudents', 'totalTeachers', 'Continuing', 'Graduated', 'Stopped'));
+        compact('totalUsers','totalStudents', 'totalTeachers', 'continuingStudents', 'graduatedStudents', 'stoppedStudents',
+            'activeTeachers', 'inactiveTeachers', 'fullTimeTeachers', 'partTimeTeachers'));
     }
 }

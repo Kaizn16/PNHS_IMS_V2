@@ -49,7 +49,7 @@
                                             @endphp
                                             <td>{{ $midterm ?: 'N/A' }}</td>
                                             <td>{{ $final ?: 'N/A' }}</td>
-                                            <td>{{ number_format($finalGrade, 2) }}</td>
+                                            <td>{{ number_format($finalGrade) }}</td>
                                             <td>
                                                 <div class="{{ $finalGrade >= 75 ? 'Passed' : 'Failed' }}">
                                                     <p>{{ $finalGrade >= 75 ? 'Passed' : 'Failed' }}</p>

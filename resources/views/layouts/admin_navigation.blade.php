@@ -115,6 +115,16 @@
                     <span class="link-name">Users</span>
                 </a>
             </li>
+
+            <li class="item-menu">
+                <a href="{{ route('admin.reports') }}" class="link {{ 
+                    request()->routeIs('admin.reports')
+                    ? 'active' : '' }}" title="Reports">
+                    <i class="material-icons icon">summarize</i>
+                    <span class="link-name">Reports</span>
+                </a>
+            </li>
+
         </uL>
     </sidebar>
 </div>

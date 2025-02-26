@@ -47,9 +47,13 @@
             </div>
 
             <div class="charts">
-                <div class="chart chart1">
+                <div class="chart">
                     <strong class="text"><i class="material-icons icon">analytics</i>Students</strong>
                     <canvas id="studentsChart" height="200"></canvas>
+                </div>
+                <div class="chart">
+                    <strong class="text"><i class="material-icons icon">analytics</i>Teachers</strong>
+                    <canvas id="teachersChart" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -66,19 +70,19 @@
 <script>
     async function renderStudentChart() {
 
-        const CONTINUING = @json($Continuing);
-        const GRADUATED = @json($Graduated);
-        const STOPPED = @json($Stopped);
+        const CONTINUING_STUDENTS = @json($continuingStudents);
+        const GRADUATED_STUDENTS = @json($graduatedStudents);
+        const STOPPED_STUDENTS = @json($stoppedStudents);
 
-        const ctx = document.getElementById('studentsChart').getContext('2d');
+        const ctxStudentsData = document.getElementById('studentsChart').getContext('2d');
         
-        new Chart(ctx, {
+        new Chart(ctxStudentsData, {
             type: 'pie',
             data: {
                 labels: ['Continuing', 'Graduated', 'Stopped'],
                 datasets: [{
                     label: 'Total Students',
-                    data: [CONTINUING, GRADUATED, STOPPED],
+                    data: [CONTINUING_STUDENTS, GRADUATED_STUDENTS, STOPPED_STUDENTS],
                     backgroundColor: ['#36a2eb', '#4caf50', '#ff6384'],
                     borderColor: ['#258cd1', '#388e3c', '#d32f2f'],
                     borderWidth: 1
@@ -95,6 +99,39 @@
         });
     }
 
+    async function renderTeachersChart() {
+
+        const FULL_TIME_TEACHERS = @json($fullTimeTeachers);
+        const PART_TIME_TEACHERS = @json($partTimeTeachers);
+        const ACTIVE_TEACHERS = @json($activeTeachers);
+        const INACTIVE_TEACHERS = @json($inactiveTeachers);
+
+        const ctxTechersData = document.getElementById('teachersChart').getContext('2d');
+
+        new Chart(ctxTechersData, {
+            type: 'pie',
+            data: {
+                labels: ['Full-Time', 'Part-Time', 'Active', 'Inactive'],
+                datasets: [{
+                    label: 'Total Teachers',
+                    data: [FULL_TIME_TEACHERS, PART_TIME_TEACHERS, ACTIVE_TEACHERS, INACTIVE_TEACHERS],
+                    backgroundColor: ['#36a2eb', '#4caf50', '#ff6384', '#4caf50'],
+                    borderColor: ['#258cd1', '#388e3c', '#d32f2f', '#4caf50'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', renderStudentChart);
+    document.addEventListener('DOMContentLoaded', renderTeachersChart);
 </script>
 @endsection

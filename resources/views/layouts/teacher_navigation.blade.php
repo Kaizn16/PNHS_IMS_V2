@@ -85,6 +85,15 @@
                 </a>
             </li>
 
+            <li class="item-menu">
+                <a href="{{ route('teacher.reports') }}" class="link {{ 
+                    request()->routeIs('teacher.reports')
+                    ? 'active' : '' }}" title="Reports">
+                    <i class="material-icons icon">summarize</i>
+                    <span class="link-name">Reports</span>
+                </a>
+            </li>
+
         </uL>
     </sidebar>
 </div>

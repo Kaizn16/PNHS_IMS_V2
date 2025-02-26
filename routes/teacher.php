@@ -3,6 +3,7 @@
 use App\Http\Controllers\Teacher\AcademicRecordController;
 use App\Http\Controllers\Teacher\DashboardController;
 use App\Http\Controllers\Teacher\ManageClassController;
+use App\Http\Controllers\Teacher\ReportController;
 use App\Http\Controllers\Teacher\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +49,8 @@ Route::controller(AcademicRecordController::class)->prefix('AcademicRecords')->g
     Route::get('/Edit/{class_management_id}', 'edit')->name('teacher.edit.academic.record');
     Route::put('/Edit/{class_management_id}/Update', 'update')->name('teacher.update.academic.record');
     Route::get('/View/{class_record}', 'view')->name('teacher.view.academic.records');
+});
+
+Route::controller(ReportController::class)->prefix('Reports')->group( function() {
+    Route::get('/', 'index')->name('teacher.reports');
 });

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('academic_record_id')->constrained('academic_records', 'academic_record_id')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('student_id')->constrained('students', 'student_id')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('exam_type', ['Midterm', 'Final']);
-            $table->decimal('grade',5,2)->default(0);
+            $table->decimal('grade',3)->default(0);
             $table->timestamps();
         });
     }

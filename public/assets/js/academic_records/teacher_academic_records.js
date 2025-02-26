@@ -67,22 +67,29 @@ function populateTable(academicRecords) {
         });
     });
 
-
-    let rowIndex = 1;
-    Object.values(groupedRecords).forEach(student => {
-        const averageGrade = ((parseFloat(student.midtermGrade) || 0) + (parseFloat(student.finalGrade) || 0)) / 2;
+    const sortedRecords = Object.values(groupedRecords).map(student => {
+        const averageGrade = Math.round(((parseFloat(student.midtermGrade) || 0) + (parseFloat(student.finalGrade) || 0)) / 2);
         const remarks = averageGrade >= 75 ? 'Passed' : 'Failed';
 
+        return {
+            ...student,
+            averageGrade,
+            remarks
+        };
+    }).sort((a, b) => b.averageGrade - a.averageGrade);
+
+    let rowIndex = 1;
+    sortedRecords.forEach(student => {
         const row = `
             <tr>
                 <td>${rowIndex++}</td>
                 <td>${student.student}</td>
                 <td>${student.midtermGrade}</td>
                 <td>${student.finalGrade}</td>
-                <td>${averageGrade.toFixed(2)}</td>
+                <td>${student.averageGrade}</td>
                 <td>
-                    <div class="${remarks}">
-                        <p>${remarks}</p>
+                    <div class="${student.remarks}">
+                        <p>${student.remarks}</p>
                     </div>
                 </td>
             </tr>

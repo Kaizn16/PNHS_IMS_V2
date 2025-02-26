@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ManageClassController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
@@ -97,4 +98,9 @@ Route::controller(UserController::class)->prefix('Users')->group(function() {
    Route::put('/Restore/User', 'restore')->name('admin.restore.user');
    Route::put('/BulkRestore/Users', 'bulkRestore')->name('admin.bulkrestore.user');
    Route::delete('/PermentlyDelete/User', 'destroy')->name('admin.destroy.user');
+});
+
+
+Route::controller(ReportController::class)->prefix('Reports')->group( function() {
+   Route::get('/Reports')->name('admin.reports');
 });
