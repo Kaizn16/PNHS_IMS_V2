@@ -38,7 +38,18 @@ paginationSizeSelect.addEventListener('change', () => {
 
 function populateTable(academicRecords) {
     const tableData = document.querySelector('.tableData');
-    tableData.innerHTML = '';
+    tableData.innerHTML = `
+        <tr>
+            <td></td>
+            <td></td>
+            <td>1st Quarter</td>
+            <td>2nd Quarter</td>
+            <td>3rd Quarter</td>
+            <td>4th Quarter</td>
+            <td>Average</td>
+            <td>Remarks</td>
+        </tr>
+    `;
 
     if (academicRecords.length === 0) {
         tableData.innerHTML = '<tr><td colspan="8" style="text-align:center">No results found</td></tr>';
@@ -54,21 +65,33 @@ function populateTable(academicRecords) {
             if (!groupedRecords[key]) {
                 groupedRecords[key] = {
                     student: `${studentRecord.student.last_name}, ${studentRecord.student.first_name} ${studentRecord.student.middle_name || ''}`,
-                    midtermGrade: '-',
-                    finalGrade: '-'
+                    firstQuarter: '-',
+                    secondQuarter: '-',
+                    thirdQuarter: '-',
+                    fourthQuarter: '-'
                 };
             }
-
-            if (studentRecord.exam_type === 'Midterm') {
-                groupedRecords[key].midtermGrade = studentRecord.grade;
-            } else if (studentRecord.exam_type === 'Final') {
-                groupedRecords[key].finalGrade = studentRecord.grade;
+            // Separate the grade by its group record key
+            if (studentRecord.quarter_type === '1st Quarter') {
+                groupedRecords[key].firstQuarter = studentRecord.grade;
+            } else if (studentRecord.quarter_type === '2nd Quarter') {
+                groupedRecords[key].secondQuarter = studentRecord.grade;
+            } else if (studentRecord.quarter_type === '3rd Quarter') {
+                groupedRecords[key].thirdQuarter = studentRecord.grade;
+            } else if (studentRecord.quarter_type === '4th Quarter') {
+                groupedRecords[key].fourthQuarter = studentRecord.grade;
             }
         });
     });
 
     const sortedRecords = Object.values(groupedRecords).map(student => {
-        const averageGrade = Math.round(((parseFloat(student.midtermGrade) || 0) + (parseFloat(student.finalGrade) || 0)) / 2);
+        const totalGrade =
+            (parseFloat(student.firstQuarter) || 0) +
+            (parseFloat(student.secondQuarter) || 0) +
+            (parseFloat(student.thirdQuarter) || 0) +
+            (parseFloat(student.fourthQuarter) || 0);
+
+        const averageGrade = Math.round(totalGrade / 4);
         const remarks = averageGrade >= 75 ? 'Passed' : 'Failed';
 
         return {
@@ -84,8 +107,10 @@ function populateTable(academicRecords) {
             <tr>
                 <td>${rowIndex++}</td>
                 <td>${student.student}</td>
-                <td>${student.midtermGrade}</td>
-                <td>${student.finalGrade}</td>
+                <td>${student.firstQuarter}</td>
+                <td>${student.secondQuarter}</td>
+                <td>${student.thirdQuarter}</td>
+                <td>${student.fourthQuarter}</td>
                 <td>${student.averageGrade}</td>
                 <td>
                     <div class="${student.remarks}">

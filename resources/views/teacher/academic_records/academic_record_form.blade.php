@@ -83,6 +83,19 @@
                                     </span>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="quarter_type">Quarter<strong class="required">*</strong></label>
+                                    <select name="quarter_type" id="quarter_type" class="{{ $errors->has('quarter_type') ? 'error' : '' }}">
+                                        <option value="">-- Select Quarter Type --</option>
+                                    </select>
+                                </div>
+                                @error('quarter_type')
+                                    <span class="error">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
                     </section>
 
@@ -180,22 +193,15 @@
     const studentRecords = @json($academicRecords->flatMap->studentRecords ?? []);
 
 
+    document.getElementById('quarter_type').addEventListener('change', function() {
+        resetGrades();
+        updateGrades();
+    });
+
     document.getElementById('exam_type').addEventListener('change', function() {
-        const selectedExamType = this.value;
-        const gradeInputs = document.querySelectorAll('[name="grades[]"]');
-        const studentInputs = document.querySelectorAll('[name="students[]"]');
-
-        studentInputs.forEach((studentInput, index) => {
-            const studentId = studentInput.value;
-            const record = studentRecords.find(record => record.student_id == studentId && record.exam_type === selectedExamType);
-
-            const gradeInput = gradeInputs[index];
-            if (gradeInput) {
-                gradeInput.value = record ? record.grade : '';
-            } else {
-                showToast('warning', `No input found for Student ${studentId}`);
-            }
-        });
+        updateQuarterOptions();
+        document.getElementById('quarter_type').value = '';
+        resetGrades();
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -209,5 +215,57 @@
             examTypeSelect.dispatchEvent(new Event('change'));
         }
     });
+
+    const examType = document.getElementById("exam_type");
+    const quarterType = document.getElementById("quarter_type");
+
+    const quarters = {
+        "Midterm": ["1st Quarter", "2nd Quarter"],
+        "Final": ["3rd Quarter", "4th Quarter"]
+    };
+
+    function updateQuarterOptions() {
+        const selectedExam = examType.value;
+        quarterType.innerHTML = '<option value="">-- Select Quarter Type --</option>';
+
+        if (quarters[selectedExam]) {
+            quarters[selectedExam].forEach(quarter_type => {
+                const quarterOption = document.createElement("option");
+                quarterOption.value = quarter_type;
+                quarterOption.textContent = quarter_type;
+                quarterType.appendChild(quarterOption);
+            });
+        }
+    }
+
+    function resetGrades() {
+        document.querySelectorAll('[name="grades[]"]').forEach(gradeInput => {
+            gradeInput.value = '';
+        });
+    }
+
+    function updateGrades() {
+        const selectedQuarterType = quarterType.value;
+        const gradeInputs = document.querySelectorAll('[name="grades[]"]');
+        const studentInputs = document.querySelectorAll('[name="students[]"]');
+
+        studentInputs.forEach((studentInput, index) => {
+            const studentId = studentInput.value;
+            const record = studentRecords.find(record => record.student_id == studentId && record.quarter_type === selectedQuarterType);
+
+            const gradeInput = gradeInputs[index];
+            if (gradeInput) {
+                gradeInput.value = record ? record.grade : '';
+            } else {
+                showToast('warning', `No input found for Student ${studentId}`);
+            }
+        });
+    }
+
+    examType.addEventListener("change", updateQuarterOptions);
+    updateQuarterOptions();
+    quarterType.value = "{{ old('quarter_type') }}";
+
+
 </script>
 @endsection

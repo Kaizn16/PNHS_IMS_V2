@@ -54,14 +54,14 @@
                             <tr class="heading">
                                 <th>#</th>
                                 <th>Student</th>
-                                <th>Midterm Exam</th>
-                                <th>Final Exam</th>
-                                <th>Final Grade</th>
+                                <th colspan="2">Midterm Exam</th>
+                                <th colspan="2">Final Exam</th>
+                                <th>Average Grade</th>
                                 <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody class="tableData">
-                            
+                           
                         </tbody>
                     </table>
                 </div>

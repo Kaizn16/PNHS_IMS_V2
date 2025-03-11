@@ -14,6 +14,7 @@ class StudentRecord extends Model
         'academic_record_id',
         'student_id',
         'exam_type',
+        'quarter_type',
         'grade'
     ];
 

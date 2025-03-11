@@ -42,7 +42,7 @@ class AcademicRecordController extends Controller
                     });
                 });
             });
-
+            
 
         return view('student.academic_records.academic_records', compact('student', 'academicRecords'));
     }

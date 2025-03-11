@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\StudentRecord;
 use App\Models\AcademicRecord;
 use App\Models\ClassManagement;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -96,7 +97,12 @@ class AcademicRecordController extends Controller
     {
         $request->validate([
             'class_name' => 'required',
-            'exam_type' => 'required|in:Midterm,Final',
+            'exam_type' => ['required', Rule::in(['Midterm', 'Final'])],
+            'quarter_type' => [
+                'required',
+                Rule::when($request->exam_type === 'Midterm', Rule::in(['1st Quarter', '2nd Quarter'])),
+                Rule::when($request->exam_type === 'Final', Rule::in(['3rd Quarter', '4th Quarter'])),
+            ],
             'grades' => 'required|array',
             'grades.*' => 'required|numeric|min:0|max:100',
         ], [
@@ -108,14 +114,15 @@ class AcademicRecordController extends Controller
             ->where('semester', $request->semester)
             ->where('school_year', $request->school_year)
             ->whereHas('studentRecords', function($query) use ($request) {
-                $query->where('exam_type', $request->exam_type);
+                $query->where('exam_type', $request->exam_type)
+                    ->where('quarter_type', $request->quarter_type);
             })
             ->exists();
 
         if ($existingRecord) {
             return redirect()->route('teacher.create.academic.record')->withInput()->with([
                 'type' => 'error',
-                'message' => 'Academic record already exists for this class, exam type, semester, and school year!'
+                'message' => 'Academic record already exists for this class, exam type, quarter, semester, and school year!'
             ]);
         }
 
@@ -136,6 +143,7 @@ class AcademicRecordController extends Controller
                     'academic_record_id' => $academicRecord->academic_record_id,
                     'student_id' => $students[$index],
                     'exam_type' => $request->exam_type,
+                    'quarter_type' => $request->quarter_type,
                     'grade' => $grade
                 ]);
             }
@@ -182,7 +190,12 @@ class AcademicRecordController extends Controller
     {
         $request->validate([
             'class_name' => 'required',
-            'exam_type' => 'required|in:Midterm,Final',
+            'exam_type' => ['required', Rule::in(['Midterm', 'Final'])],
+            'quarter_type' => [
+                'required',
+                Rule::when($request->exam_type === 'Midterm', Rule::in(['1st Quarter', '2nd Quarter'])),
+                Rule::when($request->exam_type === 'Final', Rule::in(['3rd Quarter', '4th Quarter'])),
+            ],
             'students' => 'required|array',
             'grades' => 'required|array',
             'grades.*' => 'required|numeric|min:0|max:100',
@@ -210,6 +223,7 @@ class AcademicRecordController extends Controller
                 $studentRecord = StudentRecord::whereIn('academic_record_id', $academicRecords)
                     ->where('student_id', $student_id)
                     ->where('exam_type', $request->exam_type)
+                    ->where('quarter_type', $request->quarter_type)
                     ->first();
     
                 if ($studentRecord) {
@@ -219,6 +233,7 @@ class AcademicRecordController extends Controller
                         'academic_record_id' => reset($academicRecords),
                         'student_id' => $student_id,
                         'exam_type' => $request->exam_type,
+                        'quarter_type' => $request->quarter_type,
                         'grade' => $grade,
                     ]);
                 }

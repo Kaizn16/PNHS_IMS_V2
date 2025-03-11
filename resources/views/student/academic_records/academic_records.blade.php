@@ -24,13 +24,24 @@
                                         <th>Subject</th>
                                         <th>Teacher</th>
                                         <th>Year Level</th>
-                                        <th>Midterm</th>
-                                        <th>Final</th>
-                                        <th>Final Grade</th>
+                                        <th colspan="2">Midterm</th>
+                                        <th colspan="2">Final</th>
+                                        <th>Average Gradee</th>
                                         <th>Remarks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>1st Quarter</td>
+                                        <td>2nd Quarter</td>
+                                        <td>3rd Quarter</td>
+                                        <td>4th Quarter</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
                                     @foreach ($subjects as $subject)
                                         <tr>
                                             <td>{{ $subject['subject']->subject_code ?? 'N/A' }}</td>
@@ -43,12 +54,21 @@
                                             </td>                                                
                                             <td>{{ $subject['year_level'] ?? 'N/A' }}</td>
                                             @php
-                                                $midterm = optional($subject['records']->firstWhere('exam_type', 'Midterm'))->grade ?? 0;
-                                                $final = optional($subject['records']->firstWhere('exam_type', 'Final'))->grade ?? 0;
-                                                $finalGrade = ($midterm + $final) / 2;
+                                                $first_quarter = optional($subject['records']->firstWhere(fn($record) => $record['exam_type'] === 'Midterm' && $record['quarter_type'] === '1st Quarter'))->grade ?? 0;
+                                                $second_quarter = optional($subject['records']->firstWhere(fn($record) => $record['exam_type'] === 'Midterm' && $record['quarter_type'] === '2nd Quarter'))->grade ?? 0;
+
+                                                $third_quarter = optional($subject['records']->firstWhere(fn($record) => $record['exam_type'] === 'Final' && $record['quarter_type'] === '3rd Quarter'))->grade ?? 0;
+                                                $fourth_quater = optional($subject['records']->firstWhere(fn($record) => $record['exam_type'] === 'Final' && $record['quarter_type'] === '4th Quarter'))->grade ?? 0;
+
+                                                $midterm = $first_quarter + $second_quarter;
+                                                $final = $third_quarter + $fourth_quater;
+
+                                                $finalGrade = ($midterm + $final) / 4;
                                             @endphp
-                                            <td>{{ $midterm ?: 'N/A' }}</td>
-                                            <td>{{ $final ?: 'N/A' }}</td>
+                                            <td>{{ $first_quarter ?: '-' }}</td>
+                                            <td>{{ $second_quarter ?: '-' }}</td>
+                                            <td>{{ $third_quarter ?: '-' }}</td>
+                                            <td>{{ $fourth_quater ?: '-' }}</td>
                                             <td>{{ number_format($finalGrade) }}</td>
                                             <td>
                                                 <div class="{{ $finalGrade >= 75 ? 'Passed' : 'Failed' }}">
