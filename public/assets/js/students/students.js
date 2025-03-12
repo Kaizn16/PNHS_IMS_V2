@@ -65,7 +65,7 @@ paginationSizeSelect.addEventListener('change', () => {
         filterByYearLevel.value,
         filterBySection.value,
         filterByStrand.value,
-        filterByAdviser.value,
+        filterByAdviser ? filterByAdviser.value : null,
         filterBySchoolYear.value,
         filterByStatus.value,
         filterByDeletedData.checked
@@ -165,7 +165,7 @@ function handlePaginationEvents(data) {
                 filterByYearLevel.value,
                 filterBySection.value,
                 filterByStrand.value,
-                filterByAdviser.value,
+                filterByAdviser ? filterByAdviser.value : null,
                 filterBySchoolYear.value,
                 filterByStatus.value,
                 filterByDeletedData.checked
@@ -183,7 +183,7 @@ function handlePaginationEvents(data) {
                 filterByYearLevel.value,
                 filterBySection.value,
                 filterByStrand.value,
-                filterByAdviser.value,
+                filterByAdviser ? filterByAdviser.value : null,
                 filterBySchoolYear.value,
                 filterByStatus.value,
                 filterByDeletedData.checked
@@ -201,7 +201,7 @@ function handlePaginationEvents(data) {
                 filterByYearLevel.value,
                 filterBySection.value,
                 filterByStrand.value,
-                filterByAdviser.value,
+                filterByAdviser ? filterByAdviser.value : null,
                 filterBySchoolYear.value,
                 filterByStatus.value,
                 filterByDeletedData.checked
@@ -254,7 +254,7 @@ searchInput.addEventListener('input', () => {
             filterByYearLevel.value,
             filterBySection.value,
             filterByStrand.value,
-            filterByAdviser.value,
+            filterByAdviser ? filterByAdviser.value : null,
             filterBySchoolYear.value,
             filterByStatus.value,
             filterByDeletedData.checked
@@ -271,7 +271,7 @@ function handleFiltersChange() {
         filterByYearLevel.value,
         filterBySection.value,
         filterByStrand.value,
-        filterByAdviser.value,
+        filterByAdviser ? filterByAdviser.value : null,
         filterBySchoolYear.value,
         filterByStatus.value,
         filterByDeletedData.checked
