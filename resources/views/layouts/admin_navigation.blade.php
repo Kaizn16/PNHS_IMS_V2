@@ -64,6 +64,7 @@
             <li class="item-menu">
                 <a href="{{ route('admin.students') }}" class="link {{ 
                     request()->routeIs('admin.students') ||
+                    request()->routeIs('admin.view.student') ||
                     request()->routeIs('admin.create.student') || 
                     request()->routeIs('admin.edit.student') ? 'active' : '' }}"title="Student">
                     <i class="material-icons icon">people</i>
@@ -115,16 +116,6 @@
                     <span class="link-name">Users</span>
                 </a>
             </li>
-
-            <li class="item-menu">
-                <a href="{{ route('admin.reports') }}" class="link {{ 
-                    request()->routeIs('admin.reports')
-                    ? 'active' : '' }}" title="Reports">
-                    <i class="material-icons icon">summarize</i>
-                    <span class="link-name">Reports</span>
-                </a>
-            </li>
-
         </uL>
     </sidebar>
 </div>

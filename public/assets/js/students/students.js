@@ -115,7 +115,7 @@ function populateTable(students) {
                 </td>
                 <td>
                     <div class="actions">
-                        <span data-studentData='${JSON.stringify(student)}' onclick="event.stopPropagation(); viewAction(this);" class="view" title="VIEW"><i class="material-icons">visibility</i></span>
+                        <a href="${route(`${authUserRole}.view.student`, { student_id: student.student_id})}" class="view" title="VIEW"><i class="material-icons">visibility</i></a>
                         ${userDesignation !== 'Teacher' ? showAction : ''}
                     </div>
                 </td>
@@ -292,90 +292,6 @@ filterByStatus.addEventListener('change', handleFiltersChange);
 filterByDeletedData.addEventListener('change', handleFiltersChange);
 
 fetchStudents(search = '', page = 1, pageSize = 10, sex = '', year_level = '', section = '', strand = '', adviser = '', school_year = '', enrollment_status = '', is_deleted = 0); // Initial fetch
-
-function viewAction(studentData) {
-    var studentData = JSON.parse(studentData.getAttribute('data-studentData'));
-
-    Swal.fire({
-        html: `
-            <h1>View Student Info</h1>
-            <hr>
-            <section class="view-group-col">
-                <h3>Personal Information</h3>
-                <strong>First name: <span>${studentData.first_name}</span></strong>
-                <strong>Middle name: <span>${studentData.middle_name || ''}</span></strong>
-                <strong>Last name: <span>${studentData.last_name}</span></strong>
-                <strong>Sex: <span>${studentData.sex}</span></strong>
-                <strong>Date Of Birth: <span>${formatDate(studentData.date_of_birth)}</span></strong>
-                <strong>Nationality: <span>${studentData.nationality}</span></strong>
-            </section>
-            <hr>
-            <section class="view-group-col">
-                <h3>Address Information</h3>
-                <strong>Province: <span>${studentData.province.province_name}</span></strong>
-                <strong>Municipality: <span>${studentData.municipality.municipality_name}</span></strong>
-                <strong>Barangay: <span>${studentData.barangay.barangay_name}</span></strong>
-                <strong>Street Address: <span>${studentData.street_address}</span></strong>
-            </section>
-            <hr>
-        `,
-        showConfirmButton: false,
-        showCancelButton: true,
-        cancelButtonColor: "#d33",
-        cancelButtonText: 'CLOSE',
-        customClass: {
-            popup: 'custom-swal-popup',
-        },
-    });
-}
-
-function deleteAction(student_id, destroy = false) {
-
-    var student_id = JSON.parse(student_id.getAttribute('data-student_id'));
-
-    const DELETE_ROUTE = destroy ? route(`${authUserRole}.destroy.student`) : route(`${authUserRole}.softdelete.student`);
-    const method = destroy ? 'DELETE' : 'PUT';
-
-    Swal.fire({
-        title: 'Are you sure?',
-        html: `<strong class="info">Are you sure you want to delete selected data?</strong>`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'YES',
-        confirmButtonColor: '#5296BE',
-        cancelButtonColor: "#d33",
-        cancelButtonText: 'CANCEL',
-        reverseButtons: true,
-        customClass: {
-            popup: 'custom-swal-popup',
-            title: 'custom-swal-title',
-            content: 'custom-swal-text',
-        },
-    }).then((result) => {
-        if (result.isConfirmed) {
-            fetch(`${DELETE_ROUTE}?student_id=${student_id}`, {
-                method: method,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showToast('info', data.message);
-                    fetchStudents(search = '', page = 1, pageSize = 10, sex = '', year_level = '', section = '', strand = '', adviser = '', school_year = '', enrollment_status = '', is_deleted = 0);
-                } else {
-                    showToast('error', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showToast('error', 'An error occurred while deleting the data.');
-            });
-        }
-    });
-}
 
 
 document.querySelector('.bulkActionDelete').addEventListener('click', bulkActionDelete);

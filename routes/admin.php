@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
-use App\Http\Controllers\Admin\TeacherConctroller;
+use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +15,7 @@ Route::controller(DashboardController::class)->group(function() {
    Route::get('Dashboard', 'index')->name('admin.dashboard');
 });
 
-Route::controller(TeacherConctroller::class)->prefix('Teachers')->group(function() {
+Route::controller(TeacherController::class)->prefix('Teachers')->group(function() {
    Route::get('/', 'index')->name('admin.teachers');
    Route::get('/Fetch/Teachers', 'fetchTeachers')->name('admin.teachers.fetch');
    Route::get('/Create', 'create')->name('admin.create.teacher');
@@ -32,6 +32,7 @@ Route::controller(TeacherConctroller::class)->prefix('Teachers')->group(function
 Route::controller(StudentController::class)->prefix('Students')->group(function() {
    Route::get('/', 'index')->name('admin.students');
    Route::get('/Fetch/Students', 'fetchStudents')->name('admin.students.fetch');
+   Route::get('/View/{student_id}', 'show')->name('admin.view.student');
    Route::get('/Create', 'create')->name('admin.create.student');
    Route::post('/Create/Store', 'store')->name('admin.store.student');
    Route::get('/Edit/{student_id}', 'edit')->name('admin.edit.student');
@@ -49,7 +50,7 @@ Route::controller(ManageClassController::class)->prefix('ManageClass')->group(fu
    Route::get('/Create', 'create')->name('admin.create.class');
    Route::post('/Create/Store', 'store')->name('admin.store.class');
    Route::get('/Edit/{class_management_id}', 'edit')->name('admin.edit.class');
-   Route::put('/Edit/{class_management_id}/Updatee', 'update')->name('admin.update.class');
+   Route::put('/Edit/{class_management_id}/Update', 'update')->name('admin.update.class');
    Route::get('/View/{class_management_id}', 'view')->name('admin.view.class');
    Route::put('/SoftDelete/Class', 'delete')->name('admin.softdelete.class');
    Route::put('/SoftBulkDelete/Classes', 'bulkDelete')->name('admin.softbulkdelete.class');
@@ -98,6 +99,7 @@ Route::controller(UserController::class)->prefix('Users')->group(function() {
    Route::put('/Restore/User', 'restore')->name('admin.restore.user');
    Route::put('/BulkRestore/Users', 'bulkRestore')->name('admin.bulkrestore.user');
    Route::delete('/PermentlyDelete/User', 'destroy')->name('admin.destroy.user');
+   Route::put('/Restore/Default-Password', 'restoreDefaultPassword')->name('admin.restore.password.user');
 });
 
 

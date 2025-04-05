@@ -88,7 +88,7 @@
                                 <th>Class Name</th>
                                 <th>Subject</th>
                                 <th>Room</th>
-                                <th>Adviser</th>
+                                <th>Teacher</th>
                                 <th>Schedule</th>
                                 <th>Year Level</th>
                                 <th>Section</th>

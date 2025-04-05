@@ -5,7 +5,7 @@
             <img class="logo" src="{{ asset('assets/images/Logo.jpg') }}" alt="Logo">
         </a>
         <span class="profile" id="user-profile">
-            <i class="material-icons icon">account_circle</i>
+            <img class="icon" src="{{ !empty(Auth::user()->profile_image) ? asset('storage/profile_images/' . Auth::user()->profile_image) : asset('storage/profile_images/default_profile.png') }}" alt="Profile Image Preview" style="max-width: 48px; clip-path: circle();">
             <div class="dropdown-container">
                 <div class="items">
                     <div class="item">
@@ -23,6 +23,12 @@
                                 echo Auth::user()->role->role_type;
                             @endphp
                         </strong>
+                    </div>
+                    <div class="item">
+                        <a href="{{ route('student.profile') }}" class="link" title="Profile">
+                            <i class="material-icons icon">account_circle</i>
+                            <span class="link-name">My Profile</span>
+                        </a>
                     </div>
                     <div class="item">
                         <a class="link" title="Logout" id="Signout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

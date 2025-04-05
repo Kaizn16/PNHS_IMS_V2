@@ -39,7 +39,7 @@ class ClassManagement extends Model
 
     public function schedules()
     {
-        return $this->hasMany(Schedule::class, 'class_management_id');
+        return $this->hasMany(Schedule::class, 'class_management_id')->orderBy('day')->orderBy('time_start');
     }
 
     public function students()

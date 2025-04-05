@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class TeacherConctroller extends Controller
+class TeacherController extends Controller
 {
     public function index() 
     {
@@ -100,6 +100,7 @@ class TeacherConctroller extends Controller
                 'name' => $request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'default_password' => $request->password,
                 'role_id' => 2, //TEACHER
             ]);
 

@@ -48,6 +48,10 @@ class ManageClassController extends Controller
             ->when($school_year, function ($query, $school_year) {
                 return $query->where('school_year', $school_year);
             })
+            ->orderBy('year_level')
+            ->orderBy('section')
+            ->orderBy('semester')
+            ->orderBy('school_year')
             ->paginate($pageSize);
 
         return response()->json([
