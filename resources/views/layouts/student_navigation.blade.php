@@ -47,7 +47,7 @@
             <li class="item-menu">
                 <a href="{{ route('student.dashboard') }}" class="link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}" title="Dashboard">
                     <i class="material-icons icon">dashboard</i>
-                    <span class="link-name">Dahsboard</span>
+                    <span class="link-name">Dashboard</span>
                 </a>
             </li>
 

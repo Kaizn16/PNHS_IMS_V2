@@ -121,7 +121,7 @@
                         <div class="form-group-row">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <label for="province">Provice<strong class="required">*</strong></label>
+                                    <label for="province">Province<strong class="required">*</strong></label>
                                     <select name="province" id="province" class="{{ $errors->has('province') ? 'error' : '' }}"></select>
                                 </div>
                                 @error('province')

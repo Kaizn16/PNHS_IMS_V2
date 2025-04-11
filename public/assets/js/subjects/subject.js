@@ -219,7 +219,7 @@ searchInput.addEventListener('input', () => {
 
 function handleFiltersChange() {
     pageSize = parseInt(paginationSizeSelect.value);
-    fetchSubjects( searchInput.value, 
+    fetchSubjects(searchInput.value, 
         currentPage,
         pageSize,
         filterByStrand.value,

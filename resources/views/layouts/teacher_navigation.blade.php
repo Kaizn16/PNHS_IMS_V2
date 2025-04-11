@@ -20,7 +20,7 @@
                         <strong>
                             Role:
                             @php
-                                echo Auth::user()->role->role_type;
+                                echo Auth::user()->teacher->designation;
                             @endphp
                         </strong>
                     </div>
@@ -47,7 +47,7 @@
             <li class="item-menu">
                 <a href="{{ route('teacher.dashboard') }}" class="link {{ request()->routeIs('teacher.dashboard') ? 'active' : '' }}" title="Dashboard">
                     <i class="material-icons icon">dashboard</i>
-                    <span class="link-name">Dahsboard</span>
+                    <span class="link-name">Dashboard</span>
                 </a>
             </li>
 
