@@ -94,6 +94,7 @@ function populateTable(users) {
                 </td>
                 <td>
                     <div class="actions">
+                        <span data-user_id='${user.user_id}' onclick="event.stopPropagation(); restoreDefaultPassword(this);" class="restore" title="RESTORE DEFAULT PASSWORD"><i class="material-icons">restore</i></span>
                         ${showAction}
                     </div>
                 </td>
@@ -391,6 +392,53 @@ function bulkActionRestore() {
     });
 }
 
+function restoreDefaultPassword(user_id) {
+
+    var user_id = JSON.parse(user_id.getAttribute('data-user_id'));
+
+    const RESTORE_DEFAULT_PASSWORD_ROUTE = route('admin.restore.password.user');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        html: `<strong class="info">Are you sure you want to restore it's default password?</strong>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'YES',
+        confirmButtonColor: '#5296BE',
+        cancelButtonColor: "#d33",
+        cancelButtonText: 'CANCEL',
+        reverseButtons: true,
+        customClass: {
+            popup: 'custom-swal-popup',
+            title: 'custom-swal-title',
+            content: 'custom-swal-text',
+        },
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`${RESTORE_DEFAULT_PASSWORD_ROUTE}?user_id=${user_id}`, {
+                method: 'PUT',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('info', data.message);
+                    fetchUsers(search = '', page = 1, pageSize = 10, role = '', is_deleted = 0);
+                } else {
+                    showToast('error', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('error', 'An error occurred while restoring the data.');
+            });
+        }
+    });
+}
+
 function restoreAction(user_id) {
 
     var user_id = JSON.parse(user_id.getAttribute('data-user_id'));
@@ -437,6 +485,7 @@ function restoreAction(user_id) {
         }
     });
 }
+
 
 function formatDate(dateString) {
     const date = new Date(dateString);

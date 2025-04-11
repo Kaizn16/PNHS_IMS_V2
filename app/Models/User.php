@@ -20,10 +20,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'profile_image',
         'username',
         'name',
         'email',
         'password',
+        'default_password',
         'role_id',
     ];
 
@@ -61,7 +63,6 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
         ];
     }
     public const CIVIL_STATUSES = [

@@ -54,8 +54,7 @@
             <li class="item-menu">
                 <a href="{{ route('teacher.students') }}" class="link {{ 
                     request()->routeIs('teacher.students') ||
-                    request()->routeIs('teacher.create.student') || 
-                    request()->routeIs('teacher.edit.student') ? 'active' : '' }}"title="Student">
+                    request()->routeIs('teacher.view.student') ? 'active' : '' }}"title="Student">
                     <i class="material-icons icon">people</i>
                     <span class="link-name">Students</span>
                 </a>
@@ -82,15 +81,6 @@
                     ? 'active' : '' }}" title="Academic Records">
                     <i class="material-icons icon">school</i>
                     <span class="link-name">Academic</span>
-                </a>
-            </li>
-
-            <li class="item-menu">
-                <a href="{{ route('teacher.reports') }}" class="link {{ 
-                    request()->routeIs('teacher.reports')
-                    ? 'active' : '' }}" title="Reports">
-                    <i class="material-icons icon">summarize</i>
-                    <span class="link-name">Reports</span>
                 </a>
             </li>
 

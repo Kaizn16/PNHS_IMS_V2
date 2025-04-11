@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Strand;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
+use App\Models\AcademicRecord;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -65,6 +66,9 @@ class StudentController extends Controller
             ->when($enrollment_status, function ($query, $enrollment_status) {
                 return $query->where('enrollment_status', $enrollment_status);
             })
+            ->orderBy('current_year_level')
+            ->orderBy('section')
+            ->orderBy('school_year')
             ->paginate($pageSize);
 
         return response()->json([
@@ -77,6 +81,50 @@ class StudentController extends Controller
             'per_page' => $teachers->perPage(),
         ]);
     }
+
+    public function show(string $student_id)
+    {
+        $student = Student::find($student_id);
+
+        $academicRecords = AcademicRecord::query()
+            ->where('academic_records.is_deleted', false)
+            ->whereHas('classManage.students', function ($query) use ($student) {
+                $query->where('student_id', $student->student_id);
+            })
+            ->with([
+                'classManage.subject',
+                'classManage.teacher',
+                'studentRecords' => function ($query) use ($student) {
+                    $query->where('student_id', $student->student_id);
+                }
+            ])
+            ->orderByDesc('school_year')
+            ->orderBy('semester')
+            ->get()
+            ->groupBy('school_year')
+            ->map(function ($records) {
+                return $records->groupBy('semester')->map(function ($semesterRecords) {
+                    return $semesterRecords->groupBy('classManage.subject.subject_id')->map(function ($subjectRecords) {
+                        return [
+                            'subject' => $subjectRecords->first()->classManage->subject,
+                            'teacher' => $subjectRecords->first()->classManage->teacher,
+                            'year_level' => $subjectRecords->first()->classManage->year_level,
+                            'records' => $subjectRecords->flatMap->studentRecords
+                        ];
+                    });
+                });
+            });
+
+        if($student) {
+            return view('admin.students.view_student', compact('student', 'academicRecords'));
+        }
+
+        return redirect()->route('admin.students')->with([
+            'type' => 'warning',
+            'message' => 'Student not found!',
+        ]); 
+    }
+
 
     public function create()
     {
@@ -173,6 +221,7 @@ class StudentController extends Controller
                 'name' => trim("$request->first_name $request->middle_name $request->last_name"),
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'default_password' => $request->password,
                 'role_id' => 3, // Student
             ]);
 

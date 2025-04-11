@@ -594,4 +594,20 @@
     }
 
 </script>
+<script>
+    function generatePassword(length = 8) {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!";
+        let password = "";
+        for (let i = 0; i < length; i++) {
+            password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return password;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const password = generatePassword(10);
+        document.getElementById('password').value = password;
+        document.getElementById('password_confirmation').value = password;
+    });
+</script>
 @endsection

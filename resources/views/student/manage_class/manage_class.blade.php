@@ -12,9 +12,6 @@
                         All Classes
                     </h2>
                     <div class="table-header-actions">
-                        <div class="buttons">
-                            <a href="{{ route('teacher.create.class') }}"><i class="material-icons icon">add</i>NEW CLASS</a>
-                        </div>
                         <div class="filters">
                             <div class="search_wrap search_wrap_1">
                                 <div class="search_box">
@@ -72,7 +69,7 @@
                                 <th>Class Name</th>
                                 <th>Subject</th>
                                 <th>Room</th>
-                                <th>Adviser</th>
+                                <th>Teacher</th>
                                 <th>Schedule</th>
                                 <th>Year Level</th>
                                 <th>Section</th>

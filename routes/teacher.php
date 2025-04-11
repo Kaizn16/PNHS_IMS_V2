@@ -14,15 +14,7 @@ Route::controller(DashboardController::class)->prefix('Dashboard')->group(functi
 Route::controller(StudentController::class)->prefix('Students')->group(function() {
     Route::get('/', 'index')->name('teacher.students');
     Route::get('/Fetch/Students', 'fetchStudents')->name('teacher.students.fetch');
-    Route::get('/Create', 'create')->name('teacher.create.student');
-    Route::post('/Create/Store', 'store')->name('teacher.store.student');
-    Route::get('/Edit/{student_id}', 'edit')->name('teacher.edit.student');
-    Route::put('/Edit/{student_id}/Update', 'update')->name('teacher.update.student');
-    Route::put('/SoftDelete/Student', 'delete')->name('teacher.softdelete.student');
-    Route::put('/SoftBulkDelete/Students', 'bulkDelete')->name('teacher.softbulkdelete.student');
-    Route::put('/Restore/Student', 'restore')->name('teacher.restore.student');
-    Route::put('/BulkRestore/Students', 'bulkRestore')->name('teacher.bulkrestore.student');
-    Route::delete('/PermentlyDelete/Student', 'destroy')->name('teacher.destroy.student');
+    Route::get('/View/{student_id}', 'show')->name('teacher.view.student');
 });
 
 Route::controller(ManageClassController::class)->prefix('ManageClass')->group(function() {

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -63,8 +64,9 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'username' => $request->username,
-            'password' => $request->password,
-            'role_id' => 1, // Default Admin
+            'password' => Hash::make($request->password),
+            'default_password' => $request->password,
+            'role_id' => 1,
         ]);
 
         if($user) {
@@ -74,7 +76,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.room.user')->withInput()->with([
+        return redirect()->route('admin.users')->withInput()->with([
             'type' => 'error',
             'message' => 'Unable to created user!'
         ]);
@@ -106,7 +108,7 @@ class UserController extends Controller
         ];
         
         if ($request->filled('password')) {
-            $updateData['password'] = $request->password;
+            $updateData['password'] = Hash::make($request->password);
         }
         
         if($user->update($updateData)) {
@@ -116,7 +118,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.room.user')->withInput()->with([
+        return redirect()->route('admin.users')->withInput()->with([
             'type' => 'error',
             'message' => 'Unable to updated user!'
         ]);
@@ -223,5 +225,24 @@ class UserController extends Controller
             'message' => 'Unable to restore selected records.',
         ]);
 
+    }
+
+    public function restoreDefaultPassword(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $user->password = Hash::make($user->default_password);
+
+        if($user->save()) 
+        {
+            return response()->json([
+                'success' => true,
+                'message' => 'User default password is restored. your default password is ' . $user->default_password,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Unable to restore default password.',
+        ]);
     }
 }
